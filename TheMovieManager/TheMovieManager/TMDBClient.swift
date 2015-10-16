@@ -14,4 +14,68 @@ class TMDBClient : NSObject {
     
     // TODO: We need to migrate logic from the AppDelegate/ViewControllers into this API client class!
     
+    /* Shared session */
+    var session: NSURLSession
+    
+    /* Configuration object */
+    var config = TMDBConfig()
+    
+    /* Authentication state */
+    var sessionId : String?
+    var userID : Int?
+    
+    /* Initialiser */
+    override init() {
+        session = .sharedSession()
+        super.init()
+    }
+    
+    // MARK: GET
+    func taskForGETMethod(method: String, parameters: [String : AnyObject], completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
+        
+        /* 1. Set the parameters */
+        var mutableParameters = parameters
+        mutableParameters[ParameterKeys.ApiKey] = "api_key"
+        
+        /* 2/3. Build the URL and configure the request */
+        let urlString = TMDBClient.Constants.BaseURLSecure + method + TMDBClient.escapedParameters(mutableParameters)
+        
+        
+    }
+    
+    //TODO: Next bit
+    
+    /* Helper function: Given a dictionary of parameters, convert to a string for a url */
+    class func escapedParameters(parameters: [String : AnyObject]) -> String {
+        
+        var urlVars = [String]()
+        
+        for (key, value) in parameters {
+            
+            /* Make sure that it is a string value */
+            let stringValue = "\(value)"
+            
+            /* Escape it */
+            let escapedValue = stringValue.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())
+            
+            /* Append it */
+            urlVars += [key + "=" + "\(escapedValue!)"]
+            
+        }
+        
+        return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
+    }
+    
+    // MARK: Shared Instance
+    
+    class func sharedInstance() -> TMDBClient {
+        
+        struct Singleton {
+            static var sharedInstance = TMDBClient()
+        }
+        
+        return Singleton.sharedInstance
+    }
+}
+
 }
