@@ -39,11 +39,53 @@ class TMDBClient : NSObject {
         
         /* 2/3. Build the URL and configure the request */
         let urlString = TMDBClient.Constants.BaseURLSecure + method + TMDBClient.escapedParameters(mutableParameters)
+        let url = NSURL(string: urlString)!
+        let request = NSURLRequest(URL: url)
         
+        let task = session.dataTaskWithRequest(request) {data, response, error in
+            
+            /* 5/6. Parse the data and use the data (happens in the completion handler) */
+            
+            /* Was there an error */
+            guard error == nil else {
+                print("There was an error with your request: \(error)")
+                return
+            }
+            
+            /* Did we get a successful response? */
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                if let response = response as? NSHTTPURLResponse {
+                    print("Your request returned an invalid response! Status code: \(response.statusCode)!")
+                } else if let response = response {
+                    print("Your request returned an invalid response! Response: \(response)!")
+                } else {
+                    print("Your request returned an invalid response!")
+                }
+                return
+            }
+            
+            /* Was there any data returned? */
+            guard let data = data else {
+                print("No data was returned by the request!")
+            }
+            
+            
         
+        }
+        task.resume()
     }
     
-    //TODO: Next bit
+    // MARK: Helper functions
+    
+    /* Helper function: Given raw JSON, return a usable Foundation object */
+    class func parseJSONWithCompletionHandler(data: NSData, completionHandler: (result: AnyObject!, error: NSError?) -> Void) {
+        
+        var parsedResult : AnyObject!
+        do {
+            
+        }
+        
+    }
     
     /* Helper function: Given a dictionary of parameters, convert to a string for a url */
     class func escapedParameters(parameters: [String : AnyObject]) -> String {
