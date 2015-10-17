@@ -92,51 +92,7 @@ class TMDBConfig: NSObject, NSCoding {
     
     func updateConfiguration() {
         
-        /* TASK: Get TheMovieDB configuration, and update the config */
-        
-        /* Grab the app delegate and session */
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let session = NSURLSession.sharedSession()
-        
-        /* 1. Set the parameters */
-        let methodParameters = [
-            "api_key": TMDBClient.Constants.ApiKey
-        ]
-        
-        /* 2. Build the URL */
-        let urlString = TMDBClient.Constants.BaseURLSecure + "configuration" + TMDBClient.escapedParameters(methodParameters)
-        let url = NSURL(string: urlString)!
-        
-        /* 3. Configure the request */
-        let request = NSMutableURLRequest(URL: url)
-        request.addValue("application/json", forHTTPHeaderField: "Accept")
-        
-        /* 4. Make the request */
-        let task = session.dataTaskWithRequest(request) { (data, response, error) in
-            
-            /* GUARD: Was there an error? */
-            guard (error == nil) else {
-                print("There was an error with your request: \(error)")
-                return
-            }
-            
-            /* GUARD: Did we get a successful 2XX response? */
-            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
-                if let response = response as? NSHTTPURLResponse {
-                    print("Your request returned an invalid response! Status code: \(response.statusCode)!")
-                } else if let response = response {
-                    print("Your request returned an invalid response! Response: \(response)!")
-                } else {
-                    print("Your request returned an invalid response!")
-                }
-                return
-            }
-            
-            /* GUARD: Was there any data returned? */
-            guard let data = data else {
-                print("No data was returned by the request!")
-                return
-            }
+        TMDBClient.sharedInstance().getConfig() { didSucceed, error in
             
             if let error = error {
                 print("Error updating config: \(error.localizedDescription)")

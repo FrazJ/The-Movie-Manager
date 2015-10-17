@@ -17,9 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    /* Configuration for TheMovieDB, we'll take care of this for you =)... */
-    var config = TMDBConfig()
-    
     // MARK: UIApplicationDelegate
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
