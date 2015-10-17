@@ -14,7 +14,6 @@
 //  We will talk more about persistance in a later course.
 //
 
-import UIKit
 import Foundation
 
 // MARK: - File Support
@@ -139,27 +138,13 @@ class TMDBConfig: NSObject, NSCoding {
                 return
             }
             
-            /* Parse the data! */
-            let parsedResult: AnyObject!
-            do {
-                parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments) as! NSDictionary
-            } catch {
-                parsedResult = nil
-                print("Could not parse the data as JSON: '\(data)'")
-                return
-            }
-            
-            /* 6. Use the data! */
-            if let newConfig = TMDBConfig(dictionary: parsedResult as! [String : AnyObject]) {
-                appDelegate.config = newConfig
-                appDelegate.config.save()
+            if let error = error {
+                print("Error updating config: \(error.localizedDescription)")
             } else {
-                print("Could not parse config")
+                print("Updated Config: \(didSucceed)")
+                self.save()
             }
         }
-        
-        /* 7. Start the request */
-        task.resume()
     }
     
     // MARK: NSCoding

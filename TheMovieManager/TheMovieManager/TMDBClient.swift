@@ -8,11 +8,11 @@
 
 import Foundation
 
-// MARK: TMDBClient: NSObject
+// MARK: - TMDBClient: NSObject
 
 class TMDBClient : NSObject {
     
-    // TODO: We need to migrate logic from the AppDelegate/ViewControllers into this API client class!
+    // MARK: Properties
     
     /* Shared session */
     var session: NSURLSession
