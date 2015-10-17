@@ -17,9 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     
-    /* Need these for login */
-    var requestToken: String? = nil
-    
     /* Configuration for TheMovieDB, we'll take care of this for you =)... */
     var config = TMDBConfig()
     
