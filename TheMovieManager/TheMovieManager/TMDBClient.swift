@@ -35,14 +35,14 @@ class TMDBClient : NSObject {
         
         /* 1. Set the parameters */
         var mutableParameters = parameters
-        mutableParameters[ParameterKeys.ApiKey] = "api_key"
+        mutableParameters[ParameterKeys.ApiKey] = Constants.ApiKey
         
         /* 2/3. Build the URL and configure the request */
-        let urlString = TMDBClient.Constants.BaseURLSecure + method + TMDBClient.escapedParameters(mutableParameters)
+        let urlString = Constants.BaseURLSecure + method + TMDBClient.escapedParameters(mutableParameters)
         let url = NSURL(string: urlString)!
         let request = NSURLRequest(URL: url)
         
-        let task = session.dataTaskWithRequest(request) {data, response, error in
+        let task = session.dataTaskWithRequest(request) { (data, response, error) in
             
             /* 5/6. Parse the data and use the data (happens in the completion handler) */
             
@@ -67,12 +67,15 @@ class TMDBClient : NSObject {
             /* Was there any data returned? */
             guard let data = data else {
                 print("No data was returned by the request!")
+                return
             }
             
-            
+            TMDBClient.parseJSONWithCompletionHandler(data, completionHandler: completionHandler)
         
         }
         task.resume()
+        
+        return task
     }
     
     // MARK: Helper functions
@@ -82,8 +85,13 @@ class TMDBClient : NSObject {
         
         var parsedResult : AnyObject!
         do {
-            
+            parsedResult = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+        } catch {
+            let userInfo = [NSLocalizedDescriptionKey : "Could not parse the data as JSON: '\(data)'"]
+            completionHandler(result: nil, error: NSError(domain: "parseJSONWithCompletionHanfler", code: 1, userInfo: userInfo))
         }
+        
+        completionHandler(result: parsedResult, error: nil)
         
     }
     
@@ -118,6 +126,4 @@ class TMDBClient : NSObject {
         
         return Singleton.sharedInstance
     }
-}
-
 }
