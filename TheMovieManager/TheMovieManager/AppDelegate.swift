@@ -20,6 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /* Need these for login */
     var requestToken: String? = nil
     
+    /* Configuration for TheMovieDB, we'll take care of this for you =)... */
+    var config = TMDBConfig()
+    
     // MARK: UIApplicationDelegate
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {

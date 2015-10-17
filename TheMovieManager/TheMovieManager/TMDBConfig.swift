@@ -101,11 +101,11 @@ class TMDBConfig: NSObject, NSCoding {
         
         /* 1. Set the parameters */
         let methodParameters = [
-            "api_key": appDelegate.apiKey
+            "api_key": TMDBClient.Constants.ApiKey
         ]
         
         /* 2. Build the URL */
-        let urlString = appDelegate.baseURLSecureString + "configuration" + appDelegate.escapedParameters(methodParameters)
+        let urlString = TMDBClient.Constants.BaseURLSecure + "configuration" + TMDBClient.escapedParameters(methodParameters)
         let url = NSURL(string: urlString)!
         
         /* 3. Configure the request */
