@@ -150,7 +150,7 @@ class MovieDetailViewController: UIViewController {
     
     @IBAction func toggleWatchlistButtonTouchUp(sender: AnyObject) {
         if isWatchlist {
-            TMDBClient.sharedInstance().postToWatchlist(movie!, watchlist: false) {status_code, error in
+            TMDBClient.sharedInstance().postToWatchlist(movie!, watchlist: false) { status_code, error in
                 if let err = error {
                     print(err)
                 } else {
@@ -165,7 +165,7 @@ class MovieDetailViewController: UIViewController {
                 }
             }
         } else {
-            TMDBClient.sharedInstance().postToWatchlist(movie!, watchlist: true) {status_code, error in
+            TMDBClient.sharedInstance().postToWatchlist(movie!, watchlist: true) { status_code, error in
                 if let err = error {
                     print(err)
                 } else {

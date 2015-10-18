@@ -136,8 +136,9 @@ class TMDBClient : NSObject {
         mutableParameters[ParameterKeys.ApiKey] = Constants.ApiKey
         
         /* 2/3. Build the URL and configure the request */
-        let baseURL = Constants.BaseURLSecure + method + TMDBClient.escapedParameters(parameters)
+        let baseURL = Constants.BaseURLSecure + method + TMDBClient.escapedParameters(mutableParameters)
         let url = NSURL(string: baseURL)!
+
         let request = NSMutableURLRequest(URL: url)
         request.HTTPMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Accept")
