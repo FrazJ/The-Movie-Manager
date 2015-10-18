@@ -293,10 +293,11 @@ extension TMDBClient {
         let parameters = [TMDBClient.ParameterKeys.SessionID : TMDBClient.sharedInstance().sessionId!]
         var mutableMethod : String = Methods.AccountIDWatchlist
         mutableMethod = TMDBClient.substituteKeyInMethod(mutableMethod, key: TMDBClient.URLKeys.UserID, value: String(TMDBClient.sharedInstance().userID!))!
+        print(mutableMethod)
         let jsonBody : [String:AnyObject] = [
             TMDBClient.JSONBodyKeys.MediaType : "movie",
             TMDBClient.JSONBodyKeys.MediaID : movie.id as Int,
-            TMDBClient.JSONBodyKeys.Favorite : watchlist as Bool
+            TMDBClient.JSONBodyKeys.Watchlist : watchlist as Bool
         ]
         
         /* 2. Make the request */
