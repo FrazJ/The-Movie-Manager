@@ -187,18 +187,19 @@ extension TMDBClient {
     func getWatchlistMovies(completionHandler: (result: [TMDBMovie]?, error: NSError?) -> Void) {
         
         /* 1. Specify parameters, method (if has {key}), and HTTP body (if POST) */
-        let parameters = [TMDBClient.ParameterKeys.SessionID : TMDBClient.sharedInstance().sessionId!]
+        let parameters = [TMDBClient.ParameterKeys.SessionID: TMDBClient.sharedInstance().sessionId!]
         var mutableMethod : String = Methods.AccountIDWatchlistMovies
         mutableMethod = TMDBClient.substituteKeyInMethod(mutableMethod, key: TMDBClient.URLKeys.UserID, value: String(TMDBClient.sharedInstance().userID!))!
         
         /* 2. Make the request */
         taskForGETMethod(mutableMethod, parameters: parameters) { JSONResult, error in
-        
+            
             /* 3. Send the desired value(s) to completion handler */
             if let error = error {
                 completionHandler(result: nil, error: error)
             } else {
-                if let results = JSONResult[TMDBClient.JSONResponseKeys.MovieResults] as? [[String:AnyObject]] {
+                
+                if let results = JSONResult[TMDBClient.JSONResponseKeys.MovieResults] as? [[String : AnyObject]] {
                     
                     let movies = TMDBMovie.moviesFromResults(results)
                     completionHandler(result: movies, error: nil)
@@ -255,32 +256,4 @@ extension TMDBClient {
         }
         
     }
-    
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

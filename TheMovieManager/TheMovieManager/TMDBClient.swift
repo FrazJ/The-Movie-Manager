@@ -133,9 +133,27 @@ class TMDBClient : NSObject {
     func taskForPOSTMethod(method: String, parameters: [String : AnyObject], jsonBody: [String:AnyObject], completionHandler: (result: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask {
 
         /* 1. Set the parameters */
+        var mutableParameters = parameters
+        mutableParameters[ParameterKeys.ApiKey] = Constants.ApiKey
+        
         /* 2/3. Build the URL and configure the request */
+        let baseURL = Constants.BaseURLSecure + method + TMDBClient.escapedParameters(parameters)
+        let url = NSURL(string: baseURL)!
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        request.HTTPBody = "{\"\(JSONBodyKeys.MediaType)\": \"\(jsonBody[JSONBodyKeys.MediaType])\",\"\(JSONBodyKeys.MediaID)\": \"\(jsonBody[JSONBodyKeys.MediaID])\",\"\(JSONBodyKeys.Favorite)\": \"\(jsonBody[JSONBodyKeys.Favorite])}".dataUsingEncoding(NSUTF8StringEncoding)
+
+    
         /* 4. Make the request */
+        
+        
+        
         /* 5/6. Parse the data and use the data (happens in completion handler) */
+        
+        
         /* 7. Start the request */
         
         return NSURLSessionDataTask()
